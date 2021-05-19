@@ -38,7 +38,7 @@
     border-radius: 6px;
   }
 
-  .card-categorias > img{
+  .card-categorias > button > img{
       width: 20px;
       cursor: pointer;
       transition: 0.2s;

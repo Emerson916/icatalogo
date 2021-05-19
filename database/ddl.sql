@@ -25,6 +25,11 @@ insert into tbl_administrador (nome, usuario, senha) values ("Fulano de Tal","fu
 insert into tbl_administrador (nome, usuario, senha) values ("Ciclano da Silva","ciclano","654321");
 
 
+create table tbl_categoria(
+id int primary key auto_increment,
+descricao varchar(255) not null
+);
+
 drop table tbl_produto;
 
 delete from tbl_produto where id = ?;

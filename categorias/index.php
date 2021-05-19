@@ -1,15 +1,24 @@
 <?php
 
+session_start();
 
+// Para evitar que acesse a página pela URL, precisa estar conectado!!
+
+if(!isset($_SESSION["usuarioId"])){
+    $_SESSION["mensagem"] = "você precisa fazer login";
+
+    header("location: ../produtos");
+
+    exit();
+
+}
 require("../database/conexao.php");
 
-$sql = " SELECT * FROM tbl_categoria ";
+$sql = " SELECT * FROM tbl_categoria";
 
 $resultado = mysqli_query($conexao, $sql);
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,13 +45,18 @@ $resultado = mysqli_query($conexao, $sql);
                         <label for="descricao">Descrição</label>
                         <input type="text" name="descricao" id="descricao" placeholder="Digite uma descrição"/>
                     </div>
-                    <button type="button">Cancelar</button>
+                    <button type="button" onclick="javascript: window.location.href='../produtos'">Cancelar</button>
                     <button>Salvar</button>
                 </form>
 
 
                 <h1>Lista de categorias</h1>
                 <?php
+                //mySqli_num_rows -- conta as linhas do MySqli
+                if(mysqli_num_rows($resultado) == 0){
+                    echo"<center>Nenhuma categoria cadastrada</center>";
+                }
+
                  while ($descricao = mysqli_fetch_array($resultado)) {
                 ?>
                 <form method="POST" action="actions.php">
@@ -59,8 +73,35 @@ $resultado = mysqli_query($conexao, $sql);
                 <?php
                  }
                 ?>
+
+                <!-- ***outra maneira de apagar as categorias, com JavaScript***
+
+                <form id="form-deletar" method="POST" action="./actions.php">
+                    <input type="hidden" name="acao" value="excluir"/>
+                    <input id="categoria-id" type="hidden" name="categoriaId" value=""/>
+            
+                </form>
+                -->
+
             </main>
         </section>
     </div>
+
+    <!-- ***outra maneira de apagar as categorias, com JavaScript***
+
+    <script lang="javascript">
+        function excluir(categoriaId){
+            //coloca o id da categoria no input hidden categoria-id
+            document.querySelector("#categoria-id").value = categoriaId;
+
+            //eviar o formulário de delesão
+            document.querySelector("#form-deletar").submit();
+        }
+
+        ***colocar essa parte da img no formulário de delesão***
+
+        <onclick="deletar"(< ? = $categoria['id'] ?>) img src="https://icons.veryicon.com/png/o/construction-tools/coca-design/delete-189.png"/>
+    </script>
+    -->
 </body>
 </html>

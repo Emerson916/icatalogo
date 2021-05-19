@@ -12,6 +12,12 @@ if(!isset($_SESSION["usuarioId"])){
   header("location: ../index.php");
 }
 
+require("../../database/conexao.php");
+
+$sql = "SELECT * FROM tbl_categoria";
+
+$resultado = mysqli_query($conexao, $sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -25,9 +31,14 @@ if(!isset($_SESSION["usuarioId"])){
 </head>
 
 <body>
+<?php
+   include("../../componentes/header/header.php");
+?>
+
   <header>
     <input type="search" placeholder="Pesquisar" />
   </header>
+
   <div class="content">
     <section class="produtos-container">
       <main>
@@ -77,6 +88,23 @@ if(!isset($_SESSION["usuarioId"])){
             <label for="desconto">Desconto</label>
             <input type="text" name="desconto" id="desconto">
           </div>
+          <div class="input-group">
+            <label for="categoria">Desconto</label>
+            <select type="text" name="categoria" id="categoria">
+            <option value="">SELECIONE </option>
+            <?php
+            while ($categoria = mysqli_fetch_array($resultado)){
+            ?>
+
+            <option value="<?= $categoria["id"]?>">
+              <?= $categoria["descricao"] ?>
+            </option>
+            <?php
+            }
+            ?>
+            </select>
+          </div>
+          <div></div>
           <button onclick="javascript:window.location.href = '../'">Cancelar</button>
           <button>Salvar</button>
         </form>
