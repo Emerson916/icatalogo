@@ -14,15 +14,25 @@
     include("../componentes/header/header.php");
     ?>
     <div class="content">
+        <div style="position:absolute; top:0; right:0">
+            <?php
+            if(isset($_SESSION["mensagem"])){
+                echo $_SESSION["mensagem"];
+            
+                unset($_SESSION["mensagem"]);
+            }
+            ?>
+        </div>
         <section class="produtos-container">
             <?php
             //mostrar os botões somente caso o usuário esteja logado
             if(isset($_SESSION["usuarioId"])){
+              
             ?>
             
             <header>
                 <button onclick="javascript:window.location.href ='./novo/'">Novo Produto</button>
-                <button>Adicionar Categoria</button>
+                <button onclick="javascript:window.location.href ='../categorias'">Adicionar Categoria</button>
             </header>
             <?php
             }

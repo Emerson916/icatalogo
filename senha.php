@@ -17,4 +17,3 @@ echo "<br/><br/>";
 //Recomendado utilizar o password_hash
 
 echo password_hash("1234", PASSWORD_DEFAULT);
-

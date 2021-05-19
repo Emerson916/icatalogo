@@ -1,7 +1,17 @@
 <?php
 session_start();
 
-echo session_save_path();
+//echo session_save_path();
+
+//verifica se o usuario, não está logado
+if(!isset($_SESSION["usuarioId"])){
+  //declara e coloca um erro na $_SESSION
+  $erros = "Acesso negado, você precisa logar.";
+  $_SESSION["mensagens"] = $erros;
+
+  header("location: ../index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
