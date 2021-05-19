@@ -58,6 +58,10 @@ switch ($_POST["acao"]) {
         //chamamos a função de validação para verificicar se tem erros
         $erros = validarCampos();
 
+        var_dump($_FILES);
+
+        exit();
+
         //se houver erros
         if (count($erros) > 0) {
 

@@ -42,7 +42,7 @@ $resultado = mysqli_query($conexao, $sql);
   <div class="content">
     <section class="produtos-container">
       <main>
-        <form class="form-produto" method="POST" action="../acoes.php">
+        <form class="form-produto" method="POST" action="../acoes.php" enctype="multipart/form-data">
           <input type="hidden" name="acao" value="inserir" />
           <h1>Cadastro de produto</h1>
           <ul>
@@ -104,7 +104,12 @@ $resultado = mysqli_query($conexao, $sql);
             ?>
             </select>
           </div>
-          <div></div>
+         
+          <div class="input-group">
+            <label for="foto">Desconto</label>
+            <input type="file" name="foto" id="foto" accept="image/*">
+          </div>
+        
           <button onclick="javascript:window.location.href = '../'">Cancelar</button>
           <button>Salvar</button>
         </form>
