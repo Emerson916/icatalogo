@@ -58,7 +58,32 @@ switch ($_POST["acao"]) {
         //chamamos a função de validação para verificicar se tem erros
         $erros = validarCampos();
 
-        var_dump($_FILES);
+        // var_dump($_FILES);
+
+          //Se não houver alguem aquivo no campo imagem
+          if($_FILES["foto"]["error"] == UPLOAD_ERR_NO_FILE){
+            $erros[] = "O campo imagem é obrigatório";
+        
+        //se houver algum erro no upload
+        }elseif(!isset($_FILES["foto"]) || $_FILES["foto"]["error"] != UPLOAD_ERR_OK){
+
+            $erros[] = "Ops, houve um erro inesperado, verigique o arquivo e tente novamente";
+
+        }else{
+            //pegamos as irformações de imagem
+            $imagemInfos = getimagesize($_FILES["foto"]["tmp_name"]);
+
+            //se não for uma imagem
+            if(!$imagemInfos){
+                $erros[] = "O arquivo precisa ser uma imagem";
+            }
+
+            //se a imagem for maior que 2MB
+            if($_FILES["foto"]["size"] > 1024 * 2048){
+                $erros[] = "O arquivo não pode ser maior que 2MB";
+            }
+
+        }
 
         exit();
 
@@ -82,10 +107,10 @@ switch ($_POST["acao"]) {
         $tamanho = $_POST["tamanho"];
         $valor = str_replace(",", ".", $_POST["valor"]);
         $desconto = $_POST["desconto"] != "" ? $_POST["desconto"] : 0;
-
+        $imagem = $_POST["imagem"];
         //declaramos o sql de insert no banco de dados
-        $sqlInsert = " INSERT INTO tbl_produto (descricao, peso, quantidade, cor, tamanho, valor, desconto) 
-                        VALUES ('$descricao', $peso, $quantidade, '$cor', '$tamanho', $valor, $desconto) ";
+        $sqlInsert = " INSERT INTO tbl_produto (descricao, peso, quantidade, cor, tamanho, valor, desconto, imagem) 
+                        VALUES ('$descricao', $peso, $quantidade, '$cor', '$tamanho', $valor, $desconto, $imagem) ";
 
         echo $sqlInsert;
 

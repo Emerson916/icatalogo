@@ -2,7 +2,8 @@
     if(!isset($_SESSION))session_start();
 ?>
 
-<link href="/Emerson/icatalogo/componentes/header/header.css" rel="stylesheet" />
+<!-- <link href="/Emerson/icatalogo/componentes/header/header.css" rel="stylesheet" /> -->
+<link href="/icatalogo/componentes/header/header.css" rel="stylesheet" />
             <?php
             //verifica se há mensagem
             if(isset($_SESSION["mensagem"])):
@@ -24,7 +25,8 @@
 
 <header class="header">
     <figure>
-        <img src="/Emerson/icatalogo/imgs/logo.png" />
+        <!-- <img src="/Emerson/icatalogo/imgs/logo.png" /> -->
+        <img src="/icatalogo/imgs/logo.png" />
     </figure>
     <input type="search" placeholder="Pesquisar" />
     <?php
@@ -37,7 +39,8 @@
     </nav>
     <div class="container-login" id="container-login">
         <h1>Fazer login</h1>
-        <form method="POST" action="/Emerson/icatalogo/componentes/header/acoesLogin.php">
+        <!-- <form method="POST" action="/Emerson/icatalogo/componentes/header/acoesLogin.php"> -->
+        <form method="POST" action="/icatalogo/componentes/header/acoesLogin.php">
             <input type="hidden" name="acao" value="login"/>
             <input type="text" name="usuario" id="usuario" placeholder="Usuário" />
             <input type="password" name="senha" id="senha" placeholder="Senha" />
