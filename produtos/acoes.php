@@ -46,6 +46,48 @@ function validarCampos()
         $erros[] = "O campo desconto deve ser um número";
     }
 
+    //Validação de imagens
+
+    //Se não houver alguem aquivo no campo foto
+    if($_FILES["foto"]["error"] == UPLOAD_ERR_NO_FILE){
+        $erros[] = "O campo imagem/foto é obrigatório";
+    
+    //se houver algum erro no upload
+    }elseif(!isset($_FILES["foto"]) || $_FILES["foto"]["error"] != UPLOAD_ERR_OK){
+
+        $erros[] = "Ops, houve um erro inesperado, verigique o arquivo e tente novamente";
+
+    }else{
+        //pegamos as irformações de foto, na pasta "tmp_name" (pasta temporaria do xampp)
+
+        // GetImagesize pega as informações da imagem
+
+        $imagemInfos = getimagesize($_FILES["foto"]["tmp_name"]);
+
+        //se não houver uma arquivo temporario de uma imagem, então dá erro, "tem que ser uma foto!!"
+        if(!$imagemInfos){
+            $erros[] = "O arquivo precisa ser uma imagem/foto";
+        }
+
+        //se a foto for maior que 2MB
+        if($_FILES["foto"]["size"] > 1024 * 1024 * 2){
+            $erros[] = "A foto não pode ser maior que 2MB";
+        }
+
+        //Verificando se a imagem é quadrada
+
+        $width = $imagemInfos[0];
+        $height = $imagemInfos[1];
+        if($width != $$height){
+            $erros[] = "A imagem precisa ser quadrada";
+        }
+    }
+
+    //validação da categoria
+    if(!isset($_POST["categoria"]) || $_POST["categoria"] == ""){
+        $erros[] = "O campo categoria é obrigatorio, você deve selecionar uma!!";
+    }
+
     //retorna os erros
     return $erros;
 }
@@ -58,34 +100,9 @@ switch ($_POST["acao"]) {
         //chamamos a função de validação para verificicar se tem erros
         $erros = validarCampos();
 
-        // var_dump($_FILES);
+        //var_dump($_FILES);
 
-          //Se não houver alguem aquivo no campo imagem
-          if($_FILES["foto"]["error"] == UPLOAD_ERR_NO_FILE){
-            $erros[] = "O campo imagem é obrigatório";
-        
-        //se houver algum erro no upload
-        }elseif(!isset($_FILES["foto"]) || $_FILES["foto"]["error"] != UPLOAD_ERR_OK){
-
-            $erros[] = "Ops, houve um erro inesperado, verigique o arquivo e tente novamente";
-
-        }else{
-            //pegamos as irformações de imagem
-            $imagemInfos = getimagesize($_FILES["foto"]["tmp_name"]);
-
-            //se não for uma imagem
-            if(!$imagemInfos){
-                $erros[] = "O arquivo precisa ser uma imagem";
-            }
-
-            //se a imagem for maior que 2MB
-            if($_FILES["foto"]["size"] > 1024 * 2048){
-                $erros[] = "O arquivo não pode ser maior que 2MB";
-            }
-
-        }
-
-        exit();
+        //exit();
 
         //se houver erros
         if (count($erros) > 0) {
@@ -97,6 +114,15 @@ switch ($_POST["acao"]) {
             header("location: novo/index.php");
         }
 
+        //Fazer o upload do arquivo/imagem
+        $nomeArquivo = $_FILES["foto"]["name"];
+
+        $extensao = pathinfo($nomeArquivo, PATHINFO_EXTENSION);
+
+        $novoNomeArquivo = md5(microtime()) . ".$extensao";
+
+        move_uploaded_file($_FILES["foto"]["tmp_name"], "fotos/$novoNomeArquivo");
+
         //recebemos os valores em variáveis
         $descricao = $_POST["descricao"];
         //precisamos trocar a vírgula do decimal por ponto
@@ -107,10 +133,10 @@ switch ($_POST["acao"]) {
         $tamanho = $_POST["tamanho"];
         $valor = str_replace(",", ".", $_POST["valor"]);
         $desconto = $_POST["desconto"] != "" ? $_POST["desconto"] : 0;
-        $imagem = $_POST["imagem"];
+        $categoria = $_POST["categoria"];
         //declaramos o sql de insert no banco de dados
-        $sqlInsert = " INSERT INTO tbl_produto (descricao, peso, quantidade, cor, tamanho, valor, desconto, imagem) 
-                        VALUES ('$descricao', $peso, $quantidade, '$cor', '$tamanho', $valor, $desconto, $imagem) ";
+        $sqlInsert = " INSERT INTO tbl_produto (descricao, peso, quantidade, cor, tamanho, valor, desconto, imagem, categoria_id) 
+                        VALUES ('$descricao', $peso, $quantidade, '$cor', '$tamanho', $valor, $desconto, '$novoNomeArquivo', $categoria) ";
 
         echo $sqlInsert;
 

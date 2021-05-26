@@ -3,7 +3,7 @@
 const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "bcd127";
-const DATABASE = "icatalogo";
+const DATABASE = "icatalogo2";
 
 $conexao = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
 

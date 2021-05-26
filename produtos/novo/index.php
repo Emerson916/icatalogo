@@ -89,14 +89,14 @@ $resultado = mysqli_query($conexao, $sql);
             <input type="text" name="desconto" id="desconto">
           </div>
           <div class="input-group">
-            <label for="categoria">Desconto</label>
+            <label for="categoria">Categoria</label>
             <select type="text" name="categoria" id="categoria">
             <option value="">SELECIONE </option>
             <?php
             while ($categoria = mysqli_fetch_array($resultado)){
             ?>
 
-            <option value="<?= $categoria["id"]?>">
+            <option value="<?= $categoria['id']?>">
               <?= $categoria["descricao"] ?>
             </option>
             <?php
@@ -106,7 +106,7 @@ $resultado = mysqli_query($conexao, $sql);
           </div>
          
           <div class="input-group">
-            <label for="foto">Desconto</label>
+            <label for="foto">Imagem/foto</label>
             <input type="file" name="foto" id="foto" accept="image/*">
           </div>
         
