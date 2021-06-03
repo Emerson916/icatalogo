@@ -3,41 +3,24 @@
 
 require("../database/conexao.php");
 
-$sql = "SELECT p.*, c.descricao as categoria FROM tbl_produto p
+if(isset($_GET["pesquisar"]) && $_GET["pesquisar"] !=""){
+    $sql = "SELECT p.*, c.descricao as categoria FROM tbl_produto p
+            INNER JOIN tbl_categoria c ON p.categoria_id = c.id
+            WHERE p.descricao LIKE '%?%'
+            OR c.descricao LIKE '%?%'
+            ORDER BY p.id DESC;";
+}else{
+    $sql = "SELECT p.*, c.descricao as categoria FROM tbl_produto p
         INNER JOIN tbl_categoria c ON p.categoria_id = c.id
         ORDER BY p.id DESC";
+}
+
+
 
 $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
 
-//Terminar****
-//percorrer os resultados
-
 //mySqli_num_rows -- conta as linhas do MySqli
-    if(mysqli_num_rows($resultado) == 0){
-        echo"<center>Nenhuma categoria cadastrada</center>";
-    }
-
-    while ($produto = mysqli_fetch_array($resultado)) {
-    ?>
-    <article class="card-produto">
-        <figure>
-            <img src="http://3.bp.blogspot.com/-u34_1MW1w5g/T_eNqYLmtFI/AAAAAAAAEP0/jnssgMNcS8Y/s1600/converse-all-star-dark-blue.png" />
-        </figure>
-            <section>
-                <span class="preco"><?=$valor['valor']?></span>
-                <span class="parcelamento">ou em <em>10x R$100,00 sem juros</em></span>
-
-                <span class="descricao">Produto xyz cor preta novo perfeito estado 100%</span>
-                <span class="categoria">
-                    <em>Calçados</em>
-                </span>
-        </section>
-        <footer>
-
-        </footer>
-    </article>
-    <?php
-    }
+   
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -78,25 +61,52 @@ $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
             <?php
             }
             ?>
-            
             <main>
-                <article class="card-produto">
-                    <figure>
-                        <img src="http://3.bp.blogspot.com/-u34_1MW1w5g/T_eNqYLmtFI/AAAAAAAAEP0/jnssgMNcS8Y/s1600/converse-all-star-dark-blue.png" />
-                    </figure>
-                    <section>
-                        <span class="preco">R$ 1000,00</span>
-                        <span class="parcelamento">ou em <em>10x R$100,00 sem juros</em></span>
+            <?php
+                while ($produto = mysqli_fetch_array($resultado)){
+                    if($produto["valor"] > 0){
+                        $desconto = $produto["desconto"] / 100;
+                        $novoValor = $produto["valor"] - $desconto * $produto["valor"];
+                    }else{
+                        $novovalor = $produto["valor"];
+                    }
 
-                        <span class="descricao">Produto xyz cor preta novo perfeito estado 100%</span>
-                        <span class="categoria">
-                            <em>Calçados</em>
-                        </span>
-                    </section>
-                    <footer>
+                    $qtdDeparcelas = $novoValor > 1000 ? 12 : 6;
+                    $valorParcela = $novoValor / $qtdDeparcelas;
+                    $valorParcela = number_format($valorParcela, 2, ",", ".");
+                ?>
+                    <article class="card-produto">
+                        <figure>
+                            <img src="fotos/<?= $produto["imagem"] ?>"/>
+                        </figure>
+                        <section>
+                            <span class="preco">R$<?=number_format($novoValor ,2 ,"," ,".") ?>
+                                <?php
+                                if ($produto["desconto"] > 0) {
+                                ?>
+                                <em>
+                                    <?= $produto["desconto"] ?> % off
+                                </em>
+                                <?php
+                                }
+                                ?>
+                            </span>
+                            
+                            <span class="parcelamento"> ou em <em><?= $qtdDeparcelas ?> x R$ <?= $valorParcela ?> sem juros</em></span>
 
-                    </footer>
-                </article>
+                            <span class="descricao"><?= $produto["descricao"] ?> </span>
+                            <span class="categoria">
+                                <em><?= $produto["categoria"] ?></em>
+                            </span>
+                        </section>
+                        <footer>
+
+                        </footer>
+                    </article>
+                
+                <?php
+                }
+                ?>
             </main>
         </section>
     </div>

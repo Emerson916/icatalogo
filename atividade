@@ -1,0 +1,21 @@
+1 - O cliente deve poder procurar por produtos pela descrição e categoria no campo pesquisar.
+
+O SQL para fazer a pesquisa é:
+SELECT p.*, c.descricao as categoria FROM tbl_produto p
+INNER JOIN tbl_categoria c ON p.categoria_id = c.id
+WHERE p.descricao LIKE '%?%'
+OR c.descricao LIKE '%?%'
+ORDER BY p.id DESC;
+
+Substituir o ? pela variável de filtro (o que o usuário digitou no campo pesquisar).
+
+Aplicar o filtro na própria página index de produtos.
+
+2 - O administrador deve poder deletar um produto.
+Caso o administrador esteja logado, mostrar um ícone de deletar em cada produto.
+
+DELETE FROM tbl_produto WHERE id = ?;
+
+Substituir o ? pelo id do produto a ser deletado
+
+DESAFIO: Quando deletar um produto, lembre-se de deletar o arquivo da foto também.

@@ -2,8 +2,8 @@
     if(!isset($_SESSION))session_start();
 ?>
 
- <link href="/Emerson/icatalogo/componentes/header/header.css" rel="stylesheet" /> 
-<!--<link href="/icatalogo/componentes/header/header.css" rel="stylesheet" />-->
+ <!--<link href="/Emerson/icatalogo/componentes/header/header.css" rel="stylesheet" /> -->
+ <link href="/icatalogo/componentes/header/header.css" rel="stylesheet" />
             <?php
             //verifica se há mensagem
             if(isset($_SESSION["mensagem"])):
@@ -25,10 +25,18 @@
 
 <header class="header">
     <figure>
-         <img src="/Emerson/icatalogo/imgs/logo.png" /> 
-       <!-- <img src="/icatalogo/imgs/logo.png" /> -->
+         <!--<img src="/Emerson/icatalogo/imgs/logo.png" /> -->
+        <a href="/icatalogo/produtos/index.php">
+        <img src="/icatalogo/imgs/logo.png" /> 
+        </a>
     </figure>
-    <input type="search" placeholder="Pesquisar" />
+    <form method="GET" action="/vai para a index/">
+        <input type="search" name="pesquisar"placeholder="pesquisar"/>
+        <button>
+            <img src="/icatalogo/imgs/lupa.svg"/>
+        </button>
+    </form>
+    
     <?php
         if(!isset($_SESSION["usuarioId"])){
     ?>
@@ -39,8 +47,8 @@
     </nav>
     <div class="container-login" id="container-login">
         <h1>Fazer login</h1>
-        <form method="POST" action="/Emerson/icatalogo/componentes/header/acoesLogin.php"> 
-        <!--<form method="POST" action="/icatalogo/componentes/header/acoesLogin.php">-->
+        <!--<form method="POST" action="/Emerson/icatalogo/componentes/header/acoesLogin.php"> -->
+        <form method="POST" action="/icatalogo/componentes/header/acoesLogin.php">
             <input type="hidden" name="acao" value="login"/>
             <input type="text" name="usuario" id="usuario" placeholder="Usuário" />
             <input type="password" name="senha" id="senha" placeholder="Senha" />
@@ -57,7 +65,7 @@
                 <a id="menu-admin" onclick="logout()">Sair</a>
             </ul>
         </nav>
-        <form id="form-logout" style="display:none" method="POST" action="/Emerson/icatalogo/componentes/header/acoesLogin.php">
+        <form id="form-logout" style="display:none" method="POST" action="/icatalogo/componentes/header/acoesLogin.php">
             <input type="hidden" name="acao" value="logout"/>
         </form>
     <?php
