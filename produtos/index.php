@@ -1,21 +1,16 @@
 <?php
-
-
 require("../database/conexao.php");
 
-if(isset($_GET["pesquisar"]) && $_GET["pesquisar"] !=""){
-    $sql = "SELECT p.*, c.descricao as categoria FROM tbl_produto p
-            INNER JOIN tbl_categoria c ON p.categoria_id = c.id
-            WHERE p.descricao LIKE '%?%'
-            OR c.descricao LIKE '%?%'
-            ORDER BY p.id DESC;";
-}else{
-    $sql = "SELECT p.*, c.descricao as categoria FROM tbl_produto p
-        INNER JOIN tbl_categoria c ON p.categoria_id = c.id
-        ORDER BY p.id DESC";
-}
 
-
+    $sql = " SELECT p.*, c.descricao as categoria FROM tbl_produto p
+            INNER JOIN tbl_categoria c ON p.categoria_id = c.id ";
+    
+    if(isset($_GET["p"])&& $_GET["p"] != ""){
+        $p = $_GET["p"];
+        $sql .= " WHERE p.descricao LIKE '%$p%' OR c.descricao LIKE '%$p%' ";
+    }
+        $sql.= " ORDER BY p.id DESC ";   
+          
 
 $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
 
@@ -76,6 +71,10 @@ $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
                     $valorParcela = number_format($valorParcela, 2, ",", ".");
                 ?>
                     <article class="card-produto">
+                        <div class="acoes">
+                             <img onClick="javascript: window.location = './editar/index.php?id=<?= $produto['id']?>'" src="../imgs/edit.png" />
+                            <img onClick="deletar(<?= $produto['id'] ?>)" src="../imgs/trash.png" />
+                        </div>
                         <figure>
                             <img src="fotos/<?= $produto["imagem"] ?>"/>
                         </figure>
@@ -103,16 +102,27 @@ $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
 
                         </footer>
                     </article>
-                
                 <?php
                 }
                 ?>
+                <form id="formDeletar" method="POST" action="./acoes.php">
+                    <input type="hidden" name="acao" value="deletar">
+                    <input id="produtoId" type="hidden" name="produtoId" />
+                </form>
             </main>
         </section>
     </div>
     <footer>
         SENAI 2021 - Todos os direitos reservados
     </footer>
+    <script lang="javascript">
+        function deletar(produtoId){
+            if(confirm("Deseja realmente excluir este produto ?")){
+            document.querySelector("#produtoId").value = produtoId;
+            document.querySelector("#formDeletar").submit();
+            }
+        }
+    </script>    
 </body>
 
 </html>

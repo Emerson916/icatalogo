@@ -30,10 +30,19 @@
         <img src="/icatalogo/imgs/logo.png" /> 
         </a>
     </figure>
-    <form method="GET" action="/vai para a index/">
-        <input type="search" name="pesquisar"placeholder="pesquisar"/>
-        <button>
-            <img src="/icatalogo/imgs/lupa.svg"/>
+    <form method="GET" action="/icatalogo/produtos/index.php">
+        <input type="text" id="pesquisar" name="p" value="<?= isset($_GET["p"]) ? $_GET["p"] : ""?>" placeholder="pesquisar"/>
+        <button <?= isset($_GET["p"]) && $_GET["p"] !="" ? "onClick='limparFiltro()'" : ""?>>
+            <?php
+                if(isset($_GET["p"]) && $_GET["p"] != ""){
+            ?>        
+               <img style="width: 15px" src="/icatalogo/imgs/cancel.png" /> 
+            <?php
+            }else{?>
+                <img src="/icatalogo/imgs/lupa.svg" />
+            <?php
+            }
+            ?>
         </button>
     </form>
     
@@ -98,5 +107,9 @@
             containerLogin.style.opacity = 0;
             containerLogin.style.height = "0px";
         }
+    }
+
+    function limparFiltro(){
+        document.querySelector("#pesquisar").value="";
     }
 </script>
