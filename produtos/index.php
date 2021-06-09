@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("../database/conexao.php");
 
 
@@ -71,10 +72,17 @@ $resultado = mysqli_query($conexao, $sql) or die (mysqli_error($conexao));
                     $valorParcela = number_format($valorParcela, 2, ",", ".");
                 ?>
                     <article class="card-produto">
+                        <?php
+                        if(isset($_SESSION["usuarioId"])){
+                        ?>
+
                         <div class="acoes">
                              <img onClick="javascript: window.location = './editar/index.php?id=<?= $produto['id']?>'" src="../imgs/edit.png" />
                             <img onClick="deletar(<?= $produto['id'] ?>)" src="../imgs/trash.png" />
                         </div>
+                        <?php
+                        }
+                        ?>
                         <figure>
                             <img src="fotos/<?= $produto["imagem"] ?>"/>
                         </figure>

@@ -23,6 +23,9 @@ if(!$produto){
 
   exit();
 }
+$sql = " SELECT * FROM tbl_categoria ";
+
+$resultado = mysqli_query($conexao, $sql);
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +53,7 @@ if(!$produto){
       <main>
         <form class="form-produto" method="POST" action="../acoes.php" enctype="multipart/form-data">
           <input type="hidden" name="acao" value="editar" />
-          <input type="hidden" name="produtoId" value="<?= $produto["id"] ?> />
+          <input type="hidden" name="produtoId" value="<?= $produto['id']?>" />
           <h1>Editar produto</h1>
           <ul>
             <?php
@@ -67,6 +70,7 @@ if(!$produto){
             }
             ?>
           </ul>
+
           <div class="input-group span2">
             <label for="descricao">Descrição</label>
             <input type="text" value="<?= $produto['descricao']?>" name="descricao" id="descricao" required>
@@ -85,7 +89,7 @@ if(!$produto){
           </div>
           <div class="input-group">
             <label for="tamanho">Tamanho</label>
-            <input type="text" value="<?= number_format($produto['tamanho'],2,",",".")?>" name="tamanho" id="tamanho">
+            <input type="text" value="<?=$produto['tamanho']?>" name="tamanho" id="tamanho">
           </div>
           <div class="input-group">
             <label for="valor">Valor</label>

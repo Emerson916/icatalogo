@@ -1,0 +1,65 @@
+Para criar um servidor local web para o site
+
+/**************************/
+/*** 1° Forma de criar ***/
+/*************************/
+
+/** CONFIGURAÇÕES DO WINDOWNS **/
+
+1 - Entrar nas configurações e preocurar por "Editar as variaveis de ambiente"
+
+2 - Entrar no "Path" 
+
+3 - Apertar em Editar
+
+4 - Adicionar, em "novo" e "preocurar"
+
+5 - Preocurar a pasta Xampp/php
+
+
+
+/** CONFIGURAÇÕES NO VScode **/
+
+1 - Dar esse comando no "Terminal do VScode"
+
+/**    php -S localhost:80      **/
+
+2 - Vai gerar um link, ai você da um (ctrl + click) no link, assim vai ser gerado um web servidor local.
+
+
+
+
+/**************************/
+/*** 2° Forma de criar ***/
+/*************************/
+
+/** CONFIGURAÇÕES NO VScode **/
+
+1 - Ir até C:\xampp\apache\conf\extra este repositorio do Xampp
+
+2 - Achar o "vhosts.conf" 
+
+3 - fazer as seguintes alterações no "vhosts.conf"
+
+<VirtualHost *:80>
+    ServerAdmin rleme@local.icatalogo.com.br
+    DocumentRoot "C:/xampp/htdocs/Emerson/icatalogo" ----- Caminho até o arquivo
+    ServerName local.icatalogo.com.br ---- Nome do site
+    ErrorLog "logs/local.icatalogo.com.br-error.log" ---- Nome do site
+    CustomLog "logs/local.icatalogo.com.br-access.log" common ---- Nome do site
+</VirtualHost>
+
+/** CONFIGURAÇÕES DO WINDOWNS **/
+
+1 - Ir até C:\Windows\System32\drivers\etc 
+
+2 - Achar o arquivo "hosts"
+
+3 - Adiconar no fim da linha o segunite código
+
+127.0.0.1   local.icatalogo.com.br  ( Nome do site )
+
+4 - Dar um save no arquivo
+
+
+)IrxnmoBZS4Khw@kzex6

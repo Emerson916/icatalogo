@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 9;
 }
 
 .header > form {
@@ -118,4 +119,5 @@ transition: .2s;
   border: 4px solid var(--overlay);
   border-radius: 6px;
   padding: 10px;
+  z-index: 10;
 }

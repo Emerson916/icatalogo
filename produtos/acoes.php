@@ -78,7 +78,7 @@ function validarCampos()
 
         $width = $imagemInfos[0];
         $height = $imagemInfos[1];
-        if($width != $$height){
+        if($width != $height){
             $erros[] = "A imagem precisa ser quadrada";
         }
     }
@@ -216,7 +216,7 @@ switch ($_POST["acao"]) {
 
     case 'deletar':
         $produtoId = $_POST["produtoId"];
-//Procura a imagem no banco de dados id do produto
+        //Procura a imagem no banco de dados id do produto
         $sqlImage = " SELECT imagem FROM tbl_produto WHERE id = $produtoId";
         $resultado = mysqli_query($conexao, $sqlImage);
         $produto = mysqli_fetch_array($resultado);
@@ -257,6 +257,26 @@ switch ($_POST["acao"]) {
 
         $produtoId = $_POST["produtoId"];
 
+        //Deletar a imagem antiga 
+        if($_FILES["foto"]["error"] != UPLOAD_ERR_NO_FILE){
+            $sql = "SELECT imagem FROM tbl_produto WHERE id = $produtoId";
+
+            $resultado = mysqli_query($conexao, $sql);
+            $produto = mysqli_fetch_array($resultado);
+
+            unlink("./fotos/" . $produto["imagem"]);
+
+        //Subir a imagem nova
+            $nomeArquivo = $_FILES["foto"]["name"];
+
+            $extensao = pathinfo($nomeArquivo, PATHINFO_EXTENSION);
+
+            $novoNomeArquivo = md5(microtime()) . ".$extensao";
+
+            move_uploaded_file($_FILES["foto"]["tmp_name"], "fotos/$novoNomeArquivo");
+ 
+        }
+       
         $descricao = $_POST["descricao"];
         $peso = str_replace(",", ".", $_POST["peso"]);
         $quantidade = $_POST["quantidade"];
@@ -264,14 +284,17 @@ switch ($_POST["acao"]) {
         $tamanho = $_POST["tamanho"];
         $valor = str_replace(",", ".", $_POST["valor"]);
         $desconto = $_POST["desconto"] != "" ? $_POST["desconto"] : 0;
-        $categoria = $_POST["categoria"];
+        $categoriaId = $_POST["categoria"];
 
         $sql = " UPDATE tbl_produto SET descricao = '$descricao', peso = $peso,
         quantidade = $quantidade, cor = '$cor', tamanho = '$tamanho', 
-        valor = $valor, desconto = '$desconto', categoria_id = $categoriaId
-        WHERE id = $produtoId ";
+        valor = $valor, desconto = '$desconto', categoria_id = $categoriaId ";
 
-        $resultado = mysqli_query($conexao, $sql);
+        //Atualizar a imagem no banco de dados
+        $sql .= isset($novoNomeArquivo) ? ", imagem = '$novoNomeArquivo'" : "";
+        $sql .= " WHERE id = $produtoId ";
+
+        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
 
         if($resultado){
             $mensagem = "Produto editado com sucesso.";
